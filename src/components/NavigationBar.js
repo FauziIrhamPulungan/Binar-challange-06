@@ -16,7 +16,7 @@ const NavigationBar = () => {
           className="d-flex justify-content-between"
           style={{ width: "95%", height: "40px", marginLeft: "30px" }}
         >
-          <Navbar.Brand style={{ width: "200px", marginTop: "10px" }}>
+          <Navbar.Brand href="/" style={{ width: "200px", marginTop: "10px" }}>
             <img
               alt=""
               src="https://movielist-react-app.netlify.app/static/media/Logo.eeba5c17ddf85f2145e83dd963662921.svg"

@@ -79,7 +79,10 @@ function Deatail() {
             <p style={{ color: "white", fontSize: "18px", marginTop: "15px" }}>
               {movie.synopsis}
             </p>
-            <h5>{movie.rating + "/5"}</h5>
+            <h5 style={{ color: "white", fontSize: "18px", marginTop: "15px" }}>
+              {(movie.rating / 2).toFixed(1)}
+              /5
+            </h5>
             <button
               className=" bg-danger"
               style={{
