@@ -1,0 +1,81 @@
+.myBG {
+  height: 100vh;
+  background: url("../assets/image/strange.jpg");
+  background-size: cover;
+}
+
+.search::placeholder {
+  color: darkgray;
+}
+
+.trending {
+  height: 100vh;
+}
+
+/* footer */
+footer {
+  /* margin: 150px 0 100px 0; */
+  padding: 50px 136px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 2fr));
+  column-gap: 10px;
+}
+
+footer div:nth-child(2) ul {
+  display: flex;
+  row-gap: 16px;
+}
+
+footer div:nth-child(1) ul li {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+footer div:nth-child(1) ul li a {
+  display: inline-block;
+  color: black;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+footer div:nth-child(3) > p {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+footer div:nth-child(2) > ul {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+footer div:nth-child(2) > ul > li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #0d28a6;
+}
+
+footer div:nth-child(3) p {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+footer div:nth-child(2) div {
+  margin-top: 16px;
+  width: 100px;
+  height: 34px;
+  background-color: #0d28a6;
+}
+
+footer li {
+  list-style: none;
+}
