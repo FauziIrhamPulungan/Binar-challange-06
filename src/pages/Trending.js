@@ -2,13 +2,13 @@ import React from "react";
 
 import { Nav } from "react-bootstrap";
 
-function Tredding() {
+function Trending() {
   return (
     <div className="d-flex justify-content-between">
       <h1 style={{ marginTop: "90px", marginLeft: "30px" }}>Popular Movie</h1>
       <div className="d-flex justify-content-between">
         <Nav.Link
-          href="/All Movie"
+          href="/All"
           style={{ marginTop: "90px", marginRight: "60px", color: "red" }}
         >
           See All Movie
@@ -28,4 +28,4 @@ function Tredding() {
   );
 }
 
-export default Tredding;
+export default Trending;

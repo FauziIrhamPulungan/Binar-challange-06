@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar, Nav, Button } from "react-bootstrap";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 const NavigationBar = () => {
+  const navigate = useNavigate();
+  const [searchInput, setsearchInput] = useState("");
+  const { name } = useParams();
+
+  useEffect(() => {
+    if (name) setsearchInput(name);
+  }, [name]);
+
   return (
     <div
       style={{
@@ -22,8 +34,17 @@ const NavigationBar = () => {
               src="https://movielist-react-app.netlify.app/static/media/Logo.eeba5c17ddf85f2145e83dd963662921.svg"
             />
           </Navbar.Brand>
-          <div>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              navigate("/search/" + searchInput);
+            }}
+          >
             <input
+              value={searchInput}
+              onChange={(event) => {
+                setsearchInput(event.target.value);
+              }}
               className="search hover-overlay"
               placeholder="what do you want to watch?"
               style={{
@@ -47,7 +68,7 @@ const NavigationBar = () => {
               }}
               alt="icon"
             />
-          </div>
+          </form>
 
           <Nav style={{ gap: "1rem", width: "200px", marginTop: "10px" }}>
             <Button

@@ -1,5 +1,7 @@
-import Home from "./pages/Home";
+import Home from "./components/Home";
 import Detail from "./pages/Detail";
+import Search from "./pages/Search";
+import All from "./pages/All";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -11,6 +13,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/All" element={<All />} />
+      <Route path="/Search" element={<Search />} />
+      <Route path="/Search/:name" element={<Search />} />
       <Route path="/Detail/:id" element={<Detail />} />
     </Routes>
   );

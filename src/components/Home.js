@@ -1,9 +1,15 @@
 import "../App.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Carousel from "../components/Carousel";
-import Tredding from "../components/Tredding";
+import Carousel from "./Carousel";
+import Trending from "../pages/Trending";
 import "../style/landingPage.css";
+
+// // Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// // Import Swiper styles
+import "swiper/css";
 
 function Home() {
   const [Movies, setMovies] = useState([]);
@@ -33,19 +39,25 @@ function Home() {
       <div>
         <Carousel />
       </div>
+
       <div className="trending">
-        <Tredding />
-        <div
-          className="d-flex"
-          style={{ padding: "30px", gap: "32px", overflow: "auto" }}
+        <Trending />
+        <Swiper
+          style={{ marginLeft: "30px" }}
+          slidesPerView={5}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          className="mySwiper"
         >
           {Movies.map((film) => (
-            <div>
+            <SwiperSlide>
               <span onClick={() => navigate("/Detail/" + film._id)}>
                 <div
                   style={{
                     borderRadius: "10px",
-                    width: "250px",
+                    // width: "250px",
                     height: "400px",
                     overflow: "hidden",
                   }}
@@ -61,10 +73,10 @@ function Home() {
                   />
                 </div>
               </span>
-            </div>
+            </SwiperSlide>
           ))}
-          ;
-        </div>
+          ;{" "}
+        </Swiper>
       </div>
       <div style={{ background: "#f1f5f9" }}>
         <footer>
