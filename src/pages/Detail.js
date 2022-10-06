@@ -6,7 +6,7 @@ import NavigationBar from "../components/NavigationBar";
 function Deatail() {
   const { id } = useParams();
   const [movie, setMovie] = useState([]);
-  // console.log(movie);
+
   useEffect(() => {
     fetch("https://notflixtv.herokuapp.com/api/v1/movies/" + id)
       .then((Response) => Response.json())
