@@ -88,13 +88,13 @@ function All() {
               <div>
                 <ul>
                   <li>
-                    <a href="#">Conditions of Use</a>
+                    <a href="/tes">Conditions of Use</a>
                   </li>
                   <li>
-                    <a href="#">Privacy & Policy</a>
+                    <a href="/tes">Privacy & Policy</a>
                   </li>
                   <li>
-                    <a href="#">Press Room</a>
+                    <a href="/tes">Press Room</a>
                   </li>
                 </ul>
               </div>
@@ -102,7 +102,7 @@ function All() {
                 <p>Connect with us</p>
                 <ul>
                   <li>
-                    <a href="#">
+                    <a href="/tes">
                       <svg
                         width="20"
                         height="20"
@@ -120,7 +120,7 @@ function All() {
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href="/tes">
                       <svg
                         width="32"
                         height="32"
@@ -151,7 +151,7 @@ function All() {
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href="/tes">
                       <svg
                         width="32"
                         height="32"
@@ -170,7 +170,7 @@ function All() {
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href="/tes">
                       <svg
                         width="32"
                         height="32"
@@ -195,7 +195,7 @@ function All() {
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href="/tes">
                       <svg
                         width="32"
                         height="32"

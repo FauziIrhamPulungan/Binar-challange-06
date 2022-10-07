@@ -12,6 +12,41 @@
   height: 100vh;
 }
 
+.card-info {
+  transform-origin: top right;
+  /* transform: scale(0); */
+  transform: translateY(100px);
+  transform: rotate(-270deg);
+  transition: 500ms;
+  /* opacity: 0; */
+  z-index: 20;
+}
+
+.card:hover .card-info {
+  opacity: 1;
+  /* transform: scale(5); */
+  transform: rotate(1deg);
+  transform: translateY(0px);
+}
+
+.card h5,
+.card p {
+  transform: scale(0);
+  transition: 500ms;
+}
+
+.card:hover h5,
+.card:hover p {
+  transform: scale(1);
+}
+
+.cardimage {
+  opacity: 1;
+  transition: 0.3s;
+}
+.cardimage:hover {
+  opacity: 0.5;
+}
 /* footer */
 footer {
   /* margin: 150px 0 100px 0; */

@@ -13,7 +13,6 @@ import "swiper/css";
 
 function Home() {
   const [Movies, setMovies] = useState([]);
-  // console.log(Movies);
 
   useEffect(() => {
     fetch("https://notflixtv.herokuapp.com/api/v1/movies?page=undefined")
@@ -24,6 +23,7 @@ function Home() {
   }, []);
 
   const navigate = useNavigate();
+
   return (
     <div style={{ position: "relative" }}>
       <div
@@ -55,14 +55,39 @@ function Home() {
             <SwiperSlide>
               <span onClick={() => navigate("/Detail/" + film._id)}>
                 <div
+                  className="card"
                   style={{
                     borderRadius: "10px",
-                    // width: "250px",
+                    background: "black",
                     height: "400px",
                     overflow: "hidden",
+                    position: "relative",
                   }}
                 >
+                  <div
+                    className="card-info"
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      width: "100%",
+                      color: "white",
+                    }}
+                  >
+                    <h5
+                      style={{
+                        marginLeft: "25px",
+                        color: "white",
+                      }}
+                    >
+                      {film.title}
+                    </h5>
+                    <p style={{ marginLeft: "25px", color: "white" }}>
+                      ⭐ {(film.rating / 2).toFixed(1)} / 5
+                    </p>
+                  </div>
                   <img
+                    className="cardimage"
                     src={"https://image.tmdb.org/t/p/w500" + film.poster}
                     alt=""
                     style={{
@@ -75,7 +100,7 @@ function Home() {
               </span>
             </SwiperSlide>
           ))}
-          ;{" "}
+          ;
         </Swiper>
       </div>
       <div style={{ background: "#f1f5f9" }}>
@@ -83,13 +108,13 @@ function Home() {
           <div>
             <ul>
               <li>
-                <a href="#">Conditions of Use</a>
+                <a href="/tes">Conditions of Use</a>
               </li>
               <li>
-                <a href="#">Privacy & Policy</a>
+                <a href="/tes">Privacy & Policy</a>
               </li>
               <li>
-                <a href="#">Press Room</a>
+                <a href="/tes">Press Room</a>
               </li>
             </ul>
           </div>
@@ -97,7 +122,7 @@ function Home() {
             <p>Connect with us</p>
             <ul>
               <li>
-                <a href="#">
+                <a href="/tes">
                   <svg
                     width="20"
                     height="20"
@@ -115,7 +140,7 @@ function Home() {
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/tes">
                   <svg
                     width="32"
                     height="32"
@@ -146,7 +171,7 @@ function Home() {
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/tes">
                   <svg
                     width="32"
                     height="32"
@@ -165,7 +190,7 @@ function Home() {
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/tes">
                   <svg
                     width="32"
                     height="32"
@@ -190,7 +215,7 @@ function Home() {
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/tes">
                   <svg
                     width="32"
                     height="32"
