@@ -69,7 +69,7 @@ function Deatail() {
               top: "0",
               left: "0",
               width: "100%",
-              height: "150vh",
+              height: "125vh",
               // background: "white",
             }}
           >
