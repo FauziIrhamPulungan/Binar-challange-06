@@ -1,6 +1,6 @@
 import Carousel from "react-bootstrap/Carousel";
 import img from "../assets/image/strange.jpg";
-import NavigationBar from "./NavigationBar";
+
 import { useState } from "react";
 
 function CarouselNavbar() {
@@ -48,7 +48,7 @@ function CarouselNavbar() {
       )}
 
       <div style={{ position: "relative" }}>
-        <NavigationBar />
+        {/* <NavigationBar /> */}
         <Carousel fade controls={false} interval={2000}>
           <Carousel.Item>
             <div style={{ position: "relative", height: "100vh" }}>

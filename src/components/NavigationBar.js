@@ -10,7 +10,12 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
   AiOutlineUser,
-} from "react-icons/ai";
+} from "react-icons/ai/";
+import { BiUserCircle } from "react-icons/bi/";
+
+let dataLocal = false;
+const dataLocalStr = localStorage.getItem("data");
+if (dataLocalStr) dataLocal = JSON.parse(dataLocalStr);
 
 const NavigationBar = () => {
   const navigate = useNavigate();
@@ -43,10 +48,12 @@ const NavigationBar = () => {
   const [PasswordregistdInput, setPasswordregistlInput] = useState();
   const [PasswordconfirmationInput, setPasswordconfirmationlInput] = useState();
 
-  const [Inputlogin, setInputlogin] = useState(false);
+  const [Inputlogin, setInputlogin] = useState(!!dataLocal);
 
   const handleShowclose = () => setShow(false);
   const handleRegistclose = () => setShowRegist(false);
+
+  const [data, setdata] = useState(dataLocal);
 
   const Eye = () => {
     if (password === "password") {
@@ -103,13 +110,15 @@ const NavigationBar = () => {
     fetch("https://notflixtv.herokuapp.com/api/v1/users/login", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        setdata(data.data);
+
         if (data.status === true) {
           handleShowclose();
           setInputlogin(true);
         }
-        setemailInput("");
-        setpasswordlInput("");
-        localStorage.setItem("data", JSON.stringify(data));
+        setemailInput(undefined);
+        setpasswordlInput(undefined);
+        localStorage.setItem("data", JSON.stringify(data.data));
       })
       .catch((error) => console.log("error", error));
   };
@@ -140,11 +149,11 @@ const NavigationBar = () => {
           handleRegistclose();
           setInputlogin(true);
         }
-        setFirstnameInput("");
-        setLastnameInput("");
-        setEmailRegistInput("");
-        setPasswordregistlInput("");
-        setPasswordconfirmationlInput("");
+        setFirstnameInput(undefined);
+        setLastnameInput(undefined);
+        setEmailRegistInput(undefined);
+        setPasswordregistlInput(undefined);
+        setPasswordconfirmationlInput(undefined);
 
         localStorage.setItem("data", JSON.stringify(data));
       })
@@ -213,9 +222,12 @@ const NavigationBar = () => {
       <Navbar>
         <div
           className="d-flex justify-content-between"
-          style={{ width: "95%", height: "40px", marginLeft: "30px" }}
+          style={{ padding: "10px", gap: "15rem" }}
         >
-          <Navbar.Brand href="/" style={{ width: "200px", marginTop: "10px" }}>
+          <Navbar.Brand
+            onClick={() => navigate("/")}
+            style={{ width: "200px", marginTop: "10px" }}
+          >
             <img
               alt=""
               src="https://movielist-react-app.netlify.app/static/media/Logo.eeba5c17ddf85f2145e83dd963662921.svg"
@@ -559,7 +571,7 @@ const NavigationBar = () => {
                     } hover:border-rose-700`}
                   />
 
-                  <div className="icon icon-eye-login realtive">
+                  <div className="icon icon-eye-login relative">
                     <i
                       onClick={eyeRegistConfirmation}
                       style={{
@@ -601,26 +613,56 @@ const NavigationBar = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
+
             {Inputlogin === false ? (
               ""
             ) : (
-              <div
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "white",
-                  width: "50px",
-                  height: "50px",
-                }}
-              >
-                <p
+              <div className="d-flex">
+                <BiUserCircle
                   style={{
-                    color: "white",
-                    marginLeft: "80px",
-                    marginTop: "10px",
+                    width: "40px",
+                    height: "40px",
+                    color: "red",
+                    marginBottom: "10px",
                   }}
-                >
-                  name
-                </p>
+                />
+
+                <div className="d-flex">
+                  <p
+                    style={{
+                      color: "white",
+
+                      marginTop: "5px",
+                    }}
+                  >
+                    {data.first_name}
+                    {data.last_name}
+                  </p>
+
+                  <Button
+                    onClick={() => {
+                      setInputlogin(false);
+                      setemailInput(undefined);
+                      setpasswordlInput(undefined);
+                      setFirstnameInput(undefined);
+                      setLastnameInput(undefined);
+                      setEmailRegistInput(undefined);
+                      setPasswordregistlInput(undefined);
+                      setPasswordconfirmationlInput(undefined);
+                      localStorage.clear();
+                    }}
+                    className="align-items-center"
+                    style={{
+                      border: "none",
+                      borderRadius: "100px",
+                      backgroundColor: "red",
+                      marginLeft: "30px",
+                      height: "40px",
+                    }}
+                  >
+                    <h6 style={{ color: "white", marginTop: "1px" }}>Logout</h6>
+                  </Button>
+                </div>
               </div>
             )}
           </Nav>
@@ -631,13 +673,3 @@ const NavigationBar = () => {
 };
 
 export default NavigationBar;
-
-// diklik mata terbuka => jadi mata tertutup
-// diklik mata terbuka => jadi mata tertutup
-
-// bikin state boolean
-// onclick kebalikan initial state
-
-// implementasikan ke ikon mata
-// ketika state lagi true => pake mata yang terbuka
-// ketika state lagi false => pake mata yang tertutup

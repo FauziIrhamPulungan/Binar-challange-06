@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import NavigationBar from "../components/NavigationBar";
 
 function Deatail() {
   const { id } = useParams();
@@ -61,7 +60,7 @@ function Deatail() {
         </div>
       )}
       <div>
-        <NavigationBar />
+        {/* <NavigationBar /> */}
         <div style={{ position: "relative" }}>
           <div
             style={{

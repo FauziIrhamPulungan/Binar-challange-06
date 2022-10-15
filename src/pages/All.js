@@ -1,5 +1,4 @@
 import React from "react";
-import NavigationBar from "../components/NavigationBar";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +81,7 @@ function All() {
               </div>
             ))}
           </div>
-          <NavigationBar />
+          {/* <NavigationBar /> */}
           <div style={{ background: "#f1f5f9" }}>
             <footer>
               <div>
