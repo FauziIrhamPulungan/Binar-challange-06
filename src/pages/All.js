@@ -81,7 +81,7 @@ function All() {
               </div>
             ))}
           </div>
-          {/* <NavigationBar /> */}
+
           <div style={{ background: "#f1f5f9" }}>
             <footer>
               <div>

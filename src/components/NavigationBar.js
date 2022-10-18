@@ -13,13 +13,16 @@ import {
 } from "react-icons/ai/";
 import { BiUserCircle } from "react-icons/bi/";
 
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
+
 let dataLocal = false;
 const dataLocalStr = localStorage.getItem("data");
 if (dataLocalStr) dataLocal = JSON.parse(dataLocalStr);
 
 const NavigationBar = () => {
   const navigate = useNavigate();
-  const [searchInput, setsearchInput] = useState("");
+  const [, setsearchInput] = useState("");
   const { name } = useParams();
   const [show, setShow] = useState(false);
   const [showRegist, setShowRegist] = useState(false);
@@ -91,6 +94,7 @@ const NavigationBar = () => {
     }
   };
 
+  // login
   const login = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -123,6 +127,26 @@ const NavigationBar = () => {
       .catch((error) => console.log("error", error));
   };
 
+  // OAuth login
+  const responseGoogle = (response) => {
+    response.profileObj.first_name = response.profileObj.givenName;
+    response.profileObj.last_name = response.profileObj.familyName;
+    setdata(response.profileObj);
+
+    handleShowclose();
+    setInputlogin(true);
+    localStorage.setItem("data", JSON.stringify(response.profileObj));
+  };
+
+  gapi.load("client:auth2", () => {
+    gapi.auth2.init({
+      clientId:
+        "1016231200394-24ufdrehmu4j2chnafgrf2047c1i8i0r.apps.googleusercontent.com",
+      plugin_name: "",
+    });
+  });
+
+  // Regist
   const Regist = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -222,7 +246,7 @@ const NavigationBar = () => {
       <Navbar>
         <div
           className="d-flex justify-content-between"
-          style={{ padding: "10px", gap: "15rem" }}
+          style={{ padding: "10px", gap: "12rem", marginLeft: "20px" }}
         >
           <Navbar.Brand
             onClick={() => navigate("/")}
@@ -236,14 +260,12 @@ const NavigationBar = () => {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              navigate("/search/" + searchInput);
             }}
           >
             <input
-              value={searchInput}
               onChange={(event) => {
                 setsearchInput(event.target.value);
-                console.log(event.target.value);
+                navigate("/search/" + event.target.value);
               }}
               className="search hover-overlay"
               placeholder="what do you want to watch?"
@@ -321,6 +343,7 @@ const NavigationBar = () => {
                       className="hover:border-rose-700 focus:bg-rose-700"
                     />
                   </div>
+
                   <div style={{ height: "13px" }}>
                     {!validateEmail() && (
                       <p
@@ -333,9 +356,7 @@ const NavigationBar = () => {
                     )}
                   </div>
                 </Form.Group>
-
                 {/* Password */}
-
                 <Form.Group className="mb-3">
                   <Form.Control
                     value={passwordInput}
@@ -390,6 +411,17 @@ const NavigationBar = () => {
                 >
                   Login
                 </Button>
+                {Inputlogin === true ? (
+                  ""
+                ) : (
+                  <GoogleLogin
+                    clientId="1016231200394-24ufdrehmu4j2chnafgrf2047c1i8i0r.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={"single_host_origin"}
+                  />
+                )}
               </Modal.Footer>
             </Modal>
 
@@ -411,7 +443,6 @@ const NavigationBar = () => {
                 Register
               </Button>
             )}
-
             <Modal show={showRegist} onHide={handleCloseRegist} size="md">
               <Modal.Header closeButton>
                 <Modal.Title>Create Account</Modal.Title>
@@ -613,26 +644,40 @@ const NavigationBar = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
-
             {Inputlogin === false ? (
               ""
             ) : (
-              <div className="d-flex">
-                <BiUserCircle
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    color: "red",
-                    marginBottom: "10px",
-                  }}
-                />
+              <div
+                className="d-flex"
+                style={{ gap: "1rem", marginRight: "100px" }}
+              >
+                {data.imageUrl ? (
+                  <img
+                    alt=""
+                    src={data.imageUrl}
+                    style={{
+                      borderRadius: "100px",
+                      width: "50px",
+                      height: "50px",
+                    }}
+                  />
+                ) : (
+                  <BiUserCircle
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      color: "red",
+                      marginBottom: "10px",
+                    }}
+                  />
+                )}
 
                 <div className="d-flex">
                   <p
                     style={{
                       color: "white",
 
-                      marginTop: "5px",
+                      marginTop: "10px",
                     }}
                   >
                     {data.first_name}

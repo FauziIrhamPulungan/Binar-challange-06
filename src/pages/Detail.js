@@ -40,9 +40,6 @@ function Deatail() {
             style={{
               width: "800px",
               height: "500px",
-
-              // background: "white",
-              // borderRadius: "32px",
             }}
           >
             <iframe
@@ -69,7 +66,6 @@ function Deatail() {
               left: "0",
               width: "100%",
               height: "125vh",
-              // background: "white",
             }}
           >
             <div

@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Search() {
-  const { name } = useParams();
+  let { name } = useParams();
   const [movie, setMovie] = useState([]);
   const navigate = useNavigate();
+
+  if (!name) navigate("/");
 
   useEffect(() => {
     fetch(
@@ -89,7 +91,7 @@ function Search() {
               </div>
             ))}
           </div>
-          {/* <NavigationBar /> */}
+
           <div style={{ background: "#f1f5f9" }}>
             <footer>
               <div>

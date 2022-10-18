@@ -29,9 +29,6 @@ function CarouselNavbar() {
             style={{
               width: "800px",
               height: "500px",
-
-              // background: "white",
-              // borderRadius: "32px",
             }}
           >
             <iframe
