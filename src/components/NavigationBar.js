@@ -13,11 +13,13 @@ import {
 } from "react-icons/ai/";
 import { BiUserCircle } from "react-icons/bi/";
 
-import { GoogleLogin } from "react-google-login";
-import { gapi } from "gapi-script";
+// import { GoogleLogin } from "react-google-login";
+// import { gapi } from "gapi-script";
+
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 let dataLocal = false;
-const dataLocalStr = localStorage.getItem("data");
+const dataLocalStr = localStorage.getItem("user");
 if (dataLocalStr) dataLocal = JSON.parse(dataLocalStr);
 
 const NavigationBar = () => {
@@ -128,23 +130,23 @@ const NavigationBar = () => {
   };
 
   // OAuth login
-  const responseGoogle = (response) => {
-    response.profileObj.first_name = response.profileObj.givenName;
-    response.profileObj.last_name = response.profileObj.familyName;
-    setdata(response.profileObj);
-
+  const credentialResponse = (credential) => {
+    console.log("credential", credential);
     handleShowclose();
     setInputlogin(true);
-    localStorage.setItem("data", JSON.stringify(response.profileObj));
+
+    localStorage.setItem("token", JSON.stringify(credential.credential));
+    localStorage.setItem("user", JSON.stringify({ first_name: "Google User" }));
+    setdata({ first_name: "Google User" });
   };
 
-  gapi.load("client:auth2", () => {
-    gapi.auth2.init({
-      clientId:
-        "1016231200394-24ufdrehmu4j2chnafgrf2047c1i8i0r.apps.googleusercontent.com",
-      plugin_name: "",
-    });
-  });
+  // gapi.load("client:auth2", () => {
+  //   gapi.auth2.init({
+  //     clientId:
+  //       "1016231200394-24ufdrehmu4j2chnafgrf2047c1i8i0r.apps.googleusercontent.com",
+  //     plugin_name: "",
+  //   });
+  // });
 
   // Regist
   const Regist = () => {
@@ -234,456 +236,456 @@ const NavigationBar = () => {
   };
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "0",
-        left: "0",
-        width: "100%",
-        zIndex: "20",
-      }}
-    >
-      <Navbar>
-        <div
-          className="d-flex justify-content-between"
-          style={{ padding: "10px", gap: "12rem", marginLeft: "20px" }}
-        >
-          <Navbar.Brand
-            onClick={() => navigate("/")}
-            style={{ width: "200px", marginTop: "10px" }}
+    <GoogleOAuthProvider clientId="1016231200394-24ufdrehmu4j2chnafgrf2047c1i8i0r.apps.googleusercontent.com">
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          left: "0",
+          width: "100%",
+          zIndex: "20",
+        }}
+      >
+        <Navbar>
+          <div
+            className="d-flex justify-content-between"
+            style={{ padding: "10px", gap: "12rem", marginLeft: "20px" }}
           >
-            <img
-              alt=""
-              src="https://movielist-react-app.netlify.app/static/media/Logo.eeba5c17ddf85f2145e83dd963662921.svg"
-            />
-          </Navbar.Brand>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-            }}
-          >
-            <input
-              onChange={(event) => {
-                setsearchInput(event.target.value);
-                navigate("/search/" + event.target.value);
+            <Navbar.Brand
+              onClick={() => navigate("/")}
+              style={{ width: "200px", marginTop: "10px" }}
+            >
+              <img
+                alt=""
+                src="https://movielist-react-app.netlify.app/static/media/Logo.eeba5c17ddf85f2145e83dd963662921.svg"
+              />
+            </Navbar.Brand>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
               }}
-              className="search hover-overlay"
-              placeholder="what do you want to watch?"
-              style={{
-                color: "white",
-                border: "1px solid white",
-                outline: "none",
-                borderRadius: "100px",
-                width: "400px",
-                height: "40px",
-                marginTop: "10px",
-                padding: "20px",
-                background: "transparent",
-              }}
-            />
-            <img
-              src="/icons/magnifying-glass-solid.svg"
-              style={{
-                position: "relative",
-                right: "40px",
-                width: "15px",
-              }}
-              alt="icon"
-            />
-          </form>
-
-          <Nav style={{ gap: "1rem", width: "200px", marginTop: "10px" }}>
-            {Inputlogin === true ? (
-              ""
-            ) : (
-              <Button
-                variant="outline-danger"
-                onClick={handleShow}
-                className="bg-transparent"
-                style={{
-                  borderColor: "red",
-                  color: "red",
-                  borderRadius: "50px",
-                  width: "100px",
-                  height: "40px",
+            >
+              <input
+                onChange={(event) => {
+                  setsearchInput(event.target.value);
+                  navigate("/search/" + event.target.value);
                 }}
-              >
-                Login
-              </Button>
-            )}
+                className="search hover-overlay"
+                placeholder="what do you want to watch?"
+                style={{
+                  color: "white",
+                  border: "1px solid white",
+                  outline: "none",
+                  borderRadius: "100px",
+                  width: "400px",
+                  height: "40px",
+                  marginTop: "10px",
+                  padding: "20px",
+                  background: "transparent",
+                }}
+              />
+              <img
+                src="/icons/magnifying-glass-solid.svg"
+                style={{
+                  position: "relative",
+                  right: "40px",
+                  width: "15px",
+                }}
+                alt="icon"
+              />
+            </form>
 
-            <Modal show={show} onHide={handleClose} size="md">
-              <Modal.Header closeButton>
-                <Modal.Title>Login To Your Account</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <div className="icon icon-mail relative">
-                    <i
-                      style={{
-                        position: "absolute",
-                        top: "20px",
-                        right: "30px",
-                      }}
-                    >
-                      <AiOutlineMail />
-                    </i>
-
-                    <Form.Control
-                      value={emailInput}
-                      onChange={(event) => {
-                        setemailInput(event.target.value);
-                      }}
-                      style={{ borderRadius: "50px" }}
-                      type="email"
-                      placeholder="Email Address"
-                      className="hover:border-rose-700 focus:bg-rose-700"
-                    />
-                  </div>
-
-                  <div style={{ height: "13px" }}>
-                    {!validateEmail() && (
-                      <p
-                        style={{
-                          color: "red",
-                        }}
-                      >
-                        Please input your email!
-                      </p>
-                    )}
-                  </div>
-                </Form.Group>
-                {/* Password */}
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    value={passwordInput}
-                    onChange={(event) => {
-                      setpasswordlInput(event.target.value);
-                    }}
-                    style={{ borderRadius: "50px" }}
-                    type={password}
-                    placeholder="Password"
-                    className={`  ${
-                      type ? "type_password" : ""
-                    } hover:border-rose-700`}
-                  />
-
-                  <div className="icon icon-eye-login relative">
-                    <i
-                      onClick={Eye}
-                      style={{
-                        position: "absolute",
-                        top: "87px",
-                        right: "30px",
-                      }}
-                    >
-                      {eye === true ? (
-                        <AiOutlineEyeInvisible />
-                      ) : (
-                        <AiOutlineEye />
-                      )}
-                    </i>
-                  </div>
-                  <div style={{ height: "13px" }}>
-                    {!validatePassword() && (
-                      <p style={{ color: "red" }}>
-                        Please input your password!
-                      </p>
-                    )}
-                  </div>
-                </Form.Group>
-              </Modal.Body>
-              <Modal.Footer
-                className="d-flex justify-content-start"
-                style={{ border: "transparent", marginTop: "-30px" }}
-              >
+            <Nav style={{ gap: "1rem", width: "200px", marginTop: "10px" }}>
+              {Inputlogin === true ? (
+                ""
+              ) : (
                 <Button
-                  onClick={login}
-                  variant="danger"
+                  variant="outline-danger"
+                  onClick={handleShow}
+                  className="bg-transparent"
                   style={{
-                    borderRadius: "20px",
-                    width: "70px",
+                    borderColor: "red",
+                    color: "red",
+                    borderRadius: "50px",
+                    width: "100px",
                     height: "40px",
                   }}
                 >
                   Login
                 </Button>
-                {Inputlogin === true ? (
-                  ""
-                ) : (
-                  <GoogleLogin
-                    clientId="1016231200394-24ufdrehmu4j2chnafgrf2047c1i8i0r.apps.googleusercontent.com"
-                    buttonText="Login"
-                    onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
-                    cookiePolicy={"single_host_origin"}
-                  />
-                )}
-              </Modal.Footer>
-            </Modal>
+              )}
 
-            {Inputlogin === true ? (
-              ""
-            ) : (
-              <Button
-                variant="outline-danger"
-                onClick={handleShowRegist}
-                className=" bg-danger"
-                style={{
-                  color: "white",
-                  border: "10px",
-                  borderRadius: "30px",
-                  width: "100px",
-                  height: "40px",
-                }}
-              >
-                Register
-              </Button>
-            )}
-            <Modal show={showRegist} onHide={handleCloseRegist} size="md">
-              <Modal.Header closeButton>
-                <Modal.Title>Create Account</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form.Group
-                  className="mb-3"
-                  // controlId="exampleForm.ControlInput1"
-                >
-                  <div className="icon icon-user relative">
-                    <i
-                      style={{
-                        position: "absolute",
-                        top: "20px",
-                        right: "30px",
-                      }}
-                    >
-                      <AiOutlineUser />
-                    </i>
+              <Modal show={show} onHide={handleClose} size="md">
+                <Modal.Header closeButton>
+                  <Modal.Title>Login To Your Account</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <div className="icon icon-mail relative">
+                      <i
+                        style={{
+                          position: "absolute",
+                          top: "20px",
+                          right: "30px",
+                        }}
+                      >
+                        <AiOutlineMail />
+                      </i>
 
-                    <Form.Control
-                      value={FirstnameInput}
-                      onChange={(event) => {
-                        setFirstnameInput(event.target.value);
-                      }}
-                      type="text"
-                      placeholder="First Name"
-                      className="hover:border-rose-700 focus:bg-rose-700"
-                    />
-                  </div>
-                  <div style={{ height: "13px" }}>
-                    {!validateFirstname() && (
-                      <p style={{ color: "red" }}>
-                        Please input your first name
-                      </p>
-                    )}
-                  </div>
-                </Form.Group>
+                      <Form.Control
+                        value={emailInput}
+                        onChange={(event) => {
+                          setemailInput(event.target.value);
+                        }}
+                        style={{ borderRadius: "50px" }}
+                        type="email"
+                        placeholder="Email Address"
+                        className="hover:border-rose-700 focus:bg-rose-700"
+                      />
+                    </div>
 
-                <Form.Group
-                  className="mb-3"
-                  // controlId="exampleForm.ControlInput1"
-                >
-                  <div className="icon icon-user relative">
-                    <i
-                      style={{
-                        position: "absolute",
-                        top: "86px",
-                        right: "30px",
-                      }}
-                    >
-                      <AiOutlineUser />
-                    </i>
-
-                    <Form.Control
-                      value={LastnameInput}
-                      onChange={(event) => {
-                        setLastnameInput(event.target.value);
-                      }}
-                      type="text"
-                      placeholder="Last Name"
-                      className="hover:border-rose-700 focus:bg-rose-700"
-                    />
-                  </div>
-                  <div style={{ height: "13px" }}>
-                    {!validateLastname() && (
-                      <p style={{ color: "red" }}>
-                        Please input your last name!
-                      </p>
-                    )}
-                  </div>
-                </Form.Group>
-
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <div className="icon icon-mail relative">
-                    <i
-                      style={{
-                        position: "absolute",
-                        top: "155px",
-                        right: "30px",
-                      }}
-                    >
-                      <AiOutlineMail />
-                    </i>
-
-                    <Form.Control
-                      value={EmailregistInput}
-                      onChange={(event) => {
-                        setEmailRegistInput(event.target.value);
-                      }}
-                      style={{ borderRadius: "10px" }}
-                      type="email"
-                      placeholder="Email Address"
-                      className="hover:border-rose-700 focus:bg-rose-700"
-                    />
-                  </div>
-                  <div style={{ height: "13px" }}>
-                    {!validateEmailregist() && (
-                      <p style={{ color: "red" }}>Please input your email!</p>
-                    )}
-                  </div>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    value={PasswordregistdInput}
-                    onChange={(event) => {
-                      setPasswordregistlInput(event.target.value);
-                    }}
-                    style={{ borderRadius: "10px" }}
-                    type={passwordRegist}
-                    placeholder="Password"
-                    className={`  ${
-                      type ? "type_password" : ""
-                    } hover:border-rose-700`}
-                  />
-
-                  <div className="icon icon-eye-login realtive">
-                    <i
-                      onClick={EyeRegist}
-                      style={{
-                        position: "absolute",
-                        top: "225px",
-                        right: "30px",
-                      }}
-                    >
-                      {eyeRegist === true ? (
-                        <AiOutlineEyeInvisible />
-                      ) : (
-                        <AiOutlineEye />
+                    <div style={{ height: "13px" }}>
+                      {!validateEmail() && (
+                        <p
+                          style={{
+                            color: "red",
+                          }}
+                        >
+                          Please input your email!
+                        </p>
                       )}
-                    </i>
-                  </div>
-                  <div style={{ height: "13px" }}>
-                    {!validatePasswordregist() && (
-                      <p style={{ color: "red" }}>
-                        Please input your password!
-                      </p>
-                    )}
-                  </div>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    value={PasswordconfirmationInput}
-                    onChange={(event) => {
-                      setPasswordconfirmationlInput(event.target.value);
-                    }}
-                    style={{ borderRadius: "10px" }}
-                    type={passwordConfirmation}
-                    placeholder="Password Confirmation"
-                    className={`  ${
-                      type ? "type_password" : ""
-                    } hover:border-rose-700`}
-                  />
-
-                  <div className="icon icon-eye-login relative">
-                    <i
-                      onClick={eyeRegistConfirmation}
-                      style={{
-                        position: "absolute",
-                        top: "289px",
-                        right: "30px",
+                    </div>
+                  </Form.Group>
+                  {/* Password */}
+                  <Form.Group className="mb-3">
+                    <Form.Control
+                      value={passwordInput}
+                      onChange={(event) => {
+                        setpasswordlInput(event.target.value);
                       }}
-                    >
-                      {EyeregistConfirmation === true ? (
-                        <AiOutlineEyeInvisible />
-                      ) : (
-                        <AiOutlineEye />
+                      style={{ borderRadius: "50px" }}
+                      type={password}
+                      placeholder="Password"
+                      className={`  ${
+                        type ? "type_password" : ""
+                      } hover:border-rose-700`}
+                    />
+
+                    <div className="icon icon-eye-login relative">
+                      <i
+                        onClick={Eye}
+                        style={{
+                          position: "absolute",
+                          top: "87px",
+                          right: "30px",
+                        }}
+                      >
+                        {eye === true ? (
+                          <AiOutlineEyeInvisible />
+                        ) : (
+                          <AiOutlineEye />
+                        )}
+                      </i>
+                    </div>
+                    <div style={{ height: "13px" }}>
+                      {!validatePassword() && (
+                        <p style={{ color: "red" }}>
+                          Please input your password!
+                        </p>
                       )}
-                    </i>
-                  </div>
-                  <div style={{ height: "13px" }}>
-                    {!validatePassworconfirmation() && (
-                      <p style={{ color: "red" }}>
-                        Please input your password!
-                      </p>
-                    )}
-                  </div>
-                </Form.Group>
-              </Modal.Body>
-              <Modal.Footer
-                className="d-flex justify-content-start"
-                style={{ border: "transparent", marginTop: "-30px" }}
-              >
-                <Button
-                  onClick={Regist}
-                  variant="danger"
-                  style={{
-                    borderRadius: "30px",
-                    width: "150px",
-                    height: "45px",
-                  }}
+                    </div>
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer
+                  className="d-flex justify-content-start"
+                  style={{ border: "transparent", marginTop: "-30px" }}
                 >
-                  Register Now
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            {Inputlogin === false ? (
-              ""
-            ) : (
-              <div
-                className="d-flex"
-                style={{ gap: "1rem", marginRight: "100px" }}
-              >
-                {data.imageUrl ? (
-                  <img
-                    alt=""
-                    src={data.imageUrl}
+                  <Button
+                    onClick={login}
+                    variant="danger"
                     style={{
-                      borderRadius: "100px",
-                      width: "50px",
-                      height: "50px",
-                    }}
-                  />
-                ) : (
-                  <BiUserCircle
-                    style={{
-                      width: "40px",
+                      borderRadius: "20px",
+                      width: "70px",
                       height: "40px",
-                      color: "red",
-                      marginBottom: "10px",
-                    }}
-                  />
-                )}
-
-                <div className="d-flex">
-                  <p
-                    style={{
-                      color: "white",
-
-                      marginTop: "10px",
                     }}
                   >
-                    {data.first_name}
-                    {data.last_name}
-                  </p>
+                    Login
+                  </Button>
+                  {Inputlogin === true ? (
+                    ""
+                  ) : (
+                    <GoogleLogin
+                      onSuccess={credentialResponse}
+                      onError={() => {
+                        console.log("Login Failed");
+                      }}
+                    />
+                  )}
+                </Modal.Footer>
+              </Modal>
 
+              {Inputlogin === true ? (
+                ""
+              ) : (
+                <Button
+                  variant="outline-danger"
+                  onClick={handleShowRegist}
+                  className=" bg-danger"
+                  style={{
+                    color: "white",
+                    border: "10px",
+                    borderRadius: "30px",
+                    width: "100px",
+                    height: "40px",
+                  }}
+                >
+                  Register
+                </Button>
+              )}
+              <Modal show={showRegist} onHide={handleCloseRegist} size="md">
+                <Modal.Header closeButton>
+                  <Modal.Title>Create Account</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form.Group
+                    className="mb-3"
+                    // controlId="exampleForm.ControlInput1"
+                  >
+                    <div className="icon icon-user relative">
+                      <i
+                        style={{
+                          position: "absolute",
+                          top: "20px",
+                          right: "30px",
+                        }}
+                      >
+                        <AiOutlineUser />
+                      </i>
+
+                      <Form.Control
+                        value={FirstnameInput}
+                        onChange={(event) => {
+                          setFirstnameInput(event.target.value);
+                        }}
+                        type="text"
+                        placeholder="First Name"
+                        className="hover:border-rose-700 focus:bg-rose-700"
+                      />
+                    </div>
+                    <div style={{ height: "13px" }}>
+                      {!validateFirstname() && (
+                        <p style={{ color: "red" }}>
+                          Please input your first name
+                        </p>
+                      )}
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group
+                    className="mb-3"
+                    // controlId="exampleForm.ControlInput1"
+                  >
+                    <div className="icon icon-user relative">
+                      <i
+                        style={{
+                          position: "absolute",
+                          top: "86px",
+                          right: "30px",
+                        }}
+                      >
+                        <AiOutlineUser />
+                      </i>
+
+                      <Form.Control
+                        value={LastnameInput}
+                        onChange={(event) => {
+                          setLastnameInput(event.target.value);
+                        }}
+                        type="text"
+                        placeholder="Last Name"
+                        className="hover:border-rose-700 focus:bg-rose-700"
+                      />
+                    </div>
+                    <div style={{ height: "13px" }}>
+                      {!validateLastname() && (
+                        <p style={{ color: "red" }}>
+                          Please input your last name!
+                        </p>
+                      )}
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <div className="icon icon-mail relative">
+                      <i
+                        style={{
+                          position: "absolute",
+                          top: "155px",
+                          right: "30px",
+                        }}
+                      >
+                        <AiOutlineMail />
+                      </i>
+
+                      <Form.Control
+                        value={EmailregistInput}
+                        onChange={(event) => {
+                          setEmailRegistInput(event.target.value);
+                        }}
+                        style={{ borderRadius: "10px" }}
+                        type="email"
+                        placeholder="Email Address"
+                        className="hover:border-rose-700 focus:bg-rose-700"
+                      />
+                    </div>
+                    <div style={{ height: "13px" }}>
+                      {!validateEmailregist() && (
+                        <p style={{ color: "red" }}>Please input your email!</p>
+                      )}
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Control
+                      value={PasswordregistdInput}
+                      onChange={(event) => {
+                        setPasswordregistlInput(event.target.value);
+                      }}
+                      style={{ borderRadius: "10px" }}
+                      type={passwordRegist}
+                      placeholder="Password"
+                      className={`  ${
+                        type ? "type_password" : ""
+                      } hover:border-rose-700`}
+                    />
+
+                    <div className="icon icon-eye-login realtive">
+                      <i
+                        onClick={EyeRegist}
+                        style={{
+                          position: "absolute",
+                          top: "225px",
+                          right: "30px",
+                        }}
+                      >
+                        {eyeRegist === true ? (
+                          <AiOutlineEyeInvisible />
+                        ) : (
+                          <AiOutlineEye />
+                        )}
+                      </i>
+                    </div>
+                    <div style={{ height: "13px" }}>
+                      {!validatePasswordregist() && (
+                        <p style={{ color: "red" }}>
+                          Please input your password!
+                        </p>
+                      )}
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Control
+                      value={PasswordconfirmationInput}
+                      onChange={(event) => {
+                        setPasswordconfirmationlInput(event.target.value);
+                      }}
+                      style={{ borderRadius: "10px" }}
+                      type={passwordConfirmation}
+                      placeholder="Password Confirmation"
+                      className={`  ${
+                        type ? "type_password" : ""
+                      } hover:border-rose-700`}
+                    />
+
+                    <div className="icon icon-eye-login relative">
+                      <i
+                        onClick={eyeRegistConfirmation}
+                        style={{
+                          position: "absolute",
+                          top: "289px",
+                          right: "30px",
+                        }}
+                      >
+                        {EyeregistConfirmation === true ? (
+                          <AiOutlineEyeInvisible />
+                        ) : (
+                          <AiOutlineEye />
+                        )}
+                      </i>
+                    </div>
+                    <div style={{ height: "13px" }}>
+                      {!validatePassworconfirmation() && (
+                        <p style={{ color: "red" }}>
+                          Please input your password!
+                        </p>
+                      )}
+                    </div>
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer
+                  className="d-flex justify-content-start"
+                  style={{ border: "transparent", marginTop: "-30px" }}
+                >
+                  <Button
+                    onClick={Regist}
+                    variant="danger"
+                    style={{
+                      borderRadius: "30px",
+                      width: "150px",
+                      height: "45px",
+                    }}
+                  >
+                    Register Now
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              {Inputlogin === false ? (
+                ""
+              ) : (
+                <div
+                  className="d-flex"
+                  style={{ gap: "1rem", marginRight: "100px" }}
+                >
+                  {data.imageUrl ? (
+                    <img
+                      alt=""
+                      src={data.imageUrl}
+                      style={{
+                        borderRadius: "100px",
+                        width: "50px",
+                        height: "50px",
+                      }}
+                    />
+                  ) : (
+                    <BiUserCircle
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        color: "red",
+                        marginBottom: "10px",
+                      }}
+                    />
+                  )}
+                  <div className="d-flex">
+                    <p
+                      style={{
+                        color: "white",
+                        marginTop: "10px",
+                        // backgroundColor: "red",
+                      }}
+                    >
+                      {data.first_name}
+                      {data.last_name}
+                    </p>
+                  </div>
                   <Button
                     onClick={() => {
                       setInputlogin(false);
@@ -701,19 +703,18 @@ const NavigationBar = () => {
                       border: "none",
                       borderRadius: "100px",
                       backgroundColor: "red",
-                      marginLeft: "30px",
                       height: "40px",
                     }}
                   >
                     <h6 style={{ color: "white", marginTop: "1px" }}>Logout</h6>
                   </Button>
                 </div>
-              </div>
-            )}
-          </Nav>
-        </div>
-      </Navbar>
-    </div>
+              )}
+            </Nav>
+          </div>
+        </Navbar>
+      </div>
+    </GoogleOAuthProvider>
   );
 };
 
