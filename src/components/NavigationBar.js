@@ -136,7 +136,7 @@ const NavigationBar = () => {
     setInputlogin(true);
 
     localStorage.setItem("token", JSON.stringify(credential.credential));
-    localStorage.setItem("user", JSON.stringify({ first_name: "Google User" }));
+    localStorage.setItem("user", JSON.stringify({ first_name: "GoogleUser" }));
     setdata({ first_name: "Google User" });
   };
 
@@ -651,8 +651,11 @@ const NavigationBar = () => {
                 ""
               ) : (
                 <div
-                  className="d-flex"
-                  style={{ gap: "1rem", marginRight: "100px" }}
+                  className="d-flex align-items-center "
+                  style={{
+                    gap: "1rem",
+                    marginRight: "100px",
+                  }}
                 >
                   {data.imageUrl ? (
                     <img
@@ -674,18 +677,19 @@ const NavigationBar = () => {
                       }}
                     />
                   )}
-                  <div className="d-flex">
-                    <p
-                      style={{
-                        color: "white",
-                        marginTop: "10px",
-                        // backgroundColor: "red",
-                      }}
-                    >
-                      {data.first_name}
-                      {data.last_name}
-                    </p>
-                  </div>
+
+                  <p
+                    style={{
+                      whiteSpace: "nowrap",
+
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {data.first_name}
+                    {data.last_name}
+                  </p>
+
                   <Button
                     onClick={() => {
                       setInputlogin(false);
@@ -703,7 +707,6 @@ const NavigationBar = () => {
                       border: "none",
                       borderRadius: "100px",
                       backgroundColor: "red",
-                      height: "40px",
                     }}
                   >
                     <h6 style={{ color: "white", marginTop: "1px" }}>Logout</h6>
