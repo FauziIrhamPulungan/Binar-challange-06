@@ -7,6 +7,7 @@ function Deatail() {
   const [selectedMovie, setSelectedMovie] = useState({});
   const [showTrailer, setShowTrailer] = useState(false);
   const [movie, setMovie] = useState([]);
+  console.log(movie);
 
   useEffect(() => {
     fetch("https://notflixtv.herokuapp.com/api/v1/movies/" + id)
@@ -81,7 +82,7 @@ function Deatail() {
             <div
               className="example"
               style={{
-                background: `url('https://image.tmdb.org/t/p/w500${movie.poster}')`,
+                background: `url('https://image.tmdb.org/t/p/w500${movie.poster_path}')`,
                 height: "125vh",
                 backgroundSize: "cover",
               }}
@@ -104,7 +105,7 @@ function Deatail() {
                   fontWeight: "600",
                 }}
               >
-                {movie.title}
+                {movie.original_title}
               </h1>
               <h4
                 style={{
@@ -119,12 +120,12 @@ function Deatail() {
               <p
                 style={{ color: "white", fontSize: "18px", marginTop: "15px" }}
               >
-                {movie.synopsis}
+                {movie.overview}
               </p>
               <h5
                 style={{ color: "white", fontSize: "18px", marginTop: "15px" }}
               >
-                ⭐ {(movie.rating / 2).toFixed(1)} / 5
+                ⭐ {(movie.vote_average / 2).toFixed(1)} / 5
               </h5>
               <button
                 onClick={() => {
